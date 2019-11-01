@@ -24,7 +24,7 @@ fun Application.module() {
     install(CallLogging)
     install(Routing) {
         get("/") {
-            call.respond(HttpStatusCode.OK, HelloReponse("helo", "danger", 10))
+            call.respond(HttpStatusCode.OK, HelloReponse("hello", "danger", 10))
         }
     }
 }
@@ -32,7 +32,7 @@ fun Application.module() {
 fun main(args: Array<String>) {
     embeddedServer(
         Netty, 8080,
-        watchPaths = listOf("com/example"),
+        watchPaths = listOf("com.example"),
         module = Application::module
     ).start()
 }

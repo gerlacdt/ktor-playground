@@ -1,19 +1,38 @@
 package com.example
 
+import io.ktor.application.Application
 import io.ktor.application.call
-import io.ktor.http.ContentType
-import io.ktor.response.respondText
+import io.ktor.application.install
+import io.ktor.features.CallLogging
+import io.ktor.features.ContentNegotiation
+import io.ktor.features.DefaultHeaders
+import io.ktor.gson.gson
+import io.ktor.http.HttpStatusCode
+import io.ktor.response.respond
+import io.ktor.routing.Routing
 import io.ktor.routing.get
-import io.ktor.routing.routing
 import io.ktor.server.engine.embeddedServer
 import io.ktor.server.netty.Netty
 
-fun main(args: Array<String>) {
-    embeddedServer(Netty, 8080) {
-        routing {
-            get("/") {
-                call.respondText("My Example Blog", ContentType.Text.Html)
-            }
+data class HelloReponse(val greeting: String, val name: String, val age: Int)
+
+fun Application.module() {
+    install(DefaultHeaders)
+    install(ContentNegotiation) {
+        gson { }
+    }
+    install(CallLogging)
+    install(Routing) {
+        get("/") {
+            call.respond(HttpStatusCode.OK, HelloReponse("helo", "danger", 10))
         }
-    }.start(wait = true)
+    }
+}
+
+fun main(args: Array<String>) {
+    embeddedServer(
+        Netty, 8080,
+        watchPaths = listOf("com/example"),
+        module = Application::module
+    ).start()
 }

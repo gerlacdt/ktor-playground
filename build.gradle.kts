@@ -7,6 +7,8 @@ plugins {
     id("org.jlleitschuh.gradle.ktlint") version "9.0.0"
 }
 
+val ktor_version = "1.2.5"
+
 group = "com.example"
 version = "0.0.1-SNAPSHOT"
 java.sourceCompatibility = JavaVersion.VERSION_11
@@ -26,7 +28,8 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.2")
-    implementation("io.ktor:ktor-server-netty:1.2.5")
+    implementation("io.ktor:ktor-server-netty:$ktor_version")
+    implementation("io.ktor:ktor-gson:$ktor_version")
     implementation("ch.qos.logback:logback-classic:1.2.3")
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.3.1")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.3.1")
@@ -46,9 +49,9 @@ tasks.withType<KotlinCompile> {
 tasks.withType<Jar> {
     manifest {
         attributes(
-                mapOf(
-                        "Main-Class" to application.mainClassName
-                )
+            mapOf(
+                "Main-Class" to application.mainClassName
+            )
         )
     }
 }
